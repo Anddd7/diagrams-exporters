@@ -2,12 +2,12 @@
 
 [[package]]
 name = "diagrams"
-version = "0.23.5a1"
+version = "0.23.5a2"
 description = "Diagram as Code"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "diagrams-0.23.5a1-py3-none-any.whl", hash = "sha256:e17a2005afa41b96e0c39b4e1ea82c7966b58ee437b3cefba16eb2e5b2540d21"},
+    {file = "diagrams-0.23.5a2-py3-none-any.whl", hash = "sha256:0cc40c7a08bf31a02012b0f78607190c2a153bd721d13f2ab57ec29d5b21dd96"},
 ]
 
 [package.dependencies]
@@ -17,7 +17,24 @@ typed-ast = ">=1.5.4,<2.0.0"
 
 [package.source]
 type = "file"
-url = "../diagrams/dist/diagrams-0.23.5a1-py3-none-any.whl"
+url = "../diagrams/dist/diagrams-0.23.5a2-py3-none-any.whl"
+
+[[package]]
+name = "diagrams_patterns"
+version = "0.1.0"
+description = "a collection of patterns for diagrams that can be reused in different projects"
+optional = false
+python-versions = ">=3.12,<4.0"
+files = [
+    {file = "diagrams_patterns-0.1.0-py3-none-any.whl", hash = "sha256:03850d856cb4757dc6d4c0541547cd9f6c61fb13d130a48ce93d6adb5b9ae581"},
+]
+
+[package.dependencies]
+diagrams = {path = "/home/anddd7/workspace_root/workspaces/github_python/diagrams/dist/diagrams-0.23.5a2-py3-none-any.whl"}
+
+[package.source]
+type = "file"
+url = "../diagrams-patterns/dist/diagrams_patterns-0.1.0-py3-none-any.whl"
 
 [[package]]
 name = "graphviz"
@@ -174,4 +191,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "41f2ab2bc09711f020b86e1ec041e6af8e3160f04c240267134286aa316a2710"
+content-hash = "d32f9812bca7313977331cda26a8628567795de4b709bd771ebfa3b63192f2e7"
