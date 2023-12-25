@@ -8,8 +8,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-diagrams-patterns = {path = "../diagrams-patterns/dist/diagrams_patterns-0.1.0-py3-none-any.whl"}
 pydot = "^1.4.2"
+diagrams-patterns = {path = "../diagrams-patterns/dist/diagrams_patterns-0.1.0-py3-none-any.whl"}
 
 
 [build-system]
