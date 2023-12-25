@@ -111,13 +111,14 @@ files = [
 ]
 
 [[package]]
-name = "diagrams"
-version = "0.23.5a3"
+name = "diagrams-ext"
+version = "0.23.5a4"
 description = "Diagram as Code"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "diagrams-0.23.5a3-py3-none-any.whl", hash = "sha256:4b32185dec1cfb590ed3bfb65223767d2f9dd47b6f9d4f43082f03dcceacd36d"},
+    {file = "diagrams_ext-0.23.5a4-py3-none-any.whl", hash = "sha256:628e2e26b87bb9f3aa83da13f7a31014766375555559c0ae10c88fad2777f6ed"},
+    {file = "diagrams_ext-0.23.5a4.tar.gz", hash = "sha256:a04e20129adc103ccdc61f1ef11646c215d2de870ff25e6550115edb44e132ac"},
 ]
 
 [package.dependencies]
@@ -126,26 +127,19 @@ jinja2 = ">=2.10,<4.0"
 requests = ">=2.31.0,<3.0.0"
 typed-ast = ">=1.5.4,<2.0.0"
 
-[package.source]
-type = "file"
-url = "../diagrams/dist/diagrams-0.23.5a3-py3-none-any.whl"
-
 [[package]]
-name = "diagrams_patterns"
-version = "0.1.0"
+name = "diagrams-patterns"
+version = "0.1.0a1"
 description = "a collection of patterns for diagrams that can be reused in different projects"
 optional = false
 python-versions = ">=3.12,<4.0"
 files = [
-    {file = "diagrams_patterns-0.1.0-py3-none-any.whl", hash = "sha256:d168b29b0ad934fd2eb27a0f280164aaa93c70bdaf1a4a40b6303ea32c07572b"},
+    {file = "diagrams_patterns-0.1.0a1-py3-none-any.whl", hash = "sha256:cf17be3f8140e1c6e8296caaea68fc94bf04adba416e3c0a95b750adfb4f039c"},
+    {file = "diagrams_patterns-0.1.0a1.tar.gz", hash = "sha256:b1dd9283e627850cd63b5a5fecb7ea33550ca375fb6ab6d19db0c7ebb5b325e4"},
 ]
 
 [package.dependencies]
-diagrams = {path = "/root/workspaces-root/workspaces/github_python/diagrams/dist/diagrams-0.23.5a3-py3-none-any.whl"}
-
-[package.source]
-type = "file"
-url = "../diagrams-patterns/dist/diagrams_patterns-0.1.0-py3-none-any.whl"
+diagrams-ext = ">=0.23.5a4,<0.24.0"
 
 [[package]]
 name = "graphviz"
@@ -378,4 +372,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ac47f8b261acde6e9b2e547083f798a096ef550d71032e284bc31e69c4dda1d7"
+content-hash = "ec7108b24f2df501266ddb01e092125d1274d0d748ebb85a67fd0b05f8867404"

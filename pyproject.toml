@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "diagrams_exporters"
-version = "0.1.0"
+version = "0.1.0-alpha1"
 description = "export the metadata from existing tools, and generate the diagrams"
 authors = ["Anddd7 <anddd7@icloud.com>"]
 license = "MIT"
@@ -9,7 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 pydot = "^1.4.2"
-diagrams-patterns = {path = "../diagrams-patterns/dist/diagrams_patterns-0.1.0-py3-none-any.whl"}
+diagrams-patterns = "^0.1.0a1"
 
 
 [build-system]
