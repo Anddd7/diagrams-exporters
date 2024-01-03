@@ -112,13 +112,13 @@ files = [
 
 [[package]]
 name = "diagrams-ext"
-version = "0.23.5a4"
+version = "0.23.5a5"
 description = "Diagram as Code"
 optional = false
 python-versions = ">=3.7,<4.0"
 files = [
-    {file = "diagrams_ext-0.23.5a4-py3-none-any.whl", hash = "sha256:628e2e26b87bb9f3aa83da13f7a31014766375555559c0ae10c88fad2777f6ed"},
-    {file = "diagrams_ext-0.23.5a4.tar.gz", hash = "sha256:a04e20129adc103ccdc61f1ef11646c215d2de870ff25e6550115edb44e132ac"},
+    {file = "diagrams_ext-0.23.5a5-py3-none-any.whl", hash = "sha256:e8fd26efc43f2bca4bf7c659869bb84067e6c7c08b80de993010af413748e961"},
+    {file = "diagrams_ext-0.23.5a5.tar.gz", hash = "sha256:ef5831a479c465e2d4dfe581c3b580a74a7a49e62654fdecfea2052554e82889"},
 ]
 
 [package.dependencies]
@@ -372,4 +372,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "ec7108b24f2df501266ddb01e092125d1274d0d748ebb85a67fd0b05f8867404"
+content-hash = "f53013f80e14eb07a9e264516458faedcdda9fe68409fb28f0c2b4fff6989842"

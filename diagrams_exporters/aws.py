@@ -39,11 +39,11 @@ def get_node(type, name):
         "aws_default_route_table": RouteTable,
         "aws_default_vpc": VPC,
         "aws_ec2_transit_gateway": TransitGateway,
-        "aws_ec2_transit_gateway_peering_attachment": TransitGateway,
-        "aws_ec2_transit_gateway_peering_attachment_accepter": TransitGateway,
+        "aws_ec2_transit_gateway_peering_attachment": TransitGatewayAttachment,
+        "aws_ec2_transit_gateway_peering_attachment_accepter": TransitGatewayAttachment,
         "aws_ec2_transit_gateway_prefix_list_reference": EC2ElasticIpAddress,
-        "aws_ec2_transit_gateway_route": RouteTable,
-        "aws_ec2_transit_gateway_vpc_attachment": TransitGateway,
+        "aws_ec2_transit_gateway_route": TransitGatewayRouteTable,
+        "aws_ec2_transit_gateway_vpc_attachment": TransitGatewayAttachment,
         "aws_egress_only_internet_gateway": InternetGateway,
         "aws_eip": EC2ElasticIpAddress,
         "aws_flow_log": VPCFlowLogs,
@@ -57,8 +57,8 @@ def get_node(type, name):
         "aws_ram_resource_association": IAM,
         "aws_ram_resource_share": IAM,
         "aws_route": RouteTable,
-        "aws_route53_resolver_endpoint": Route53,
-        "aws_route53_resolver_rule": Route53HostedZone,
+        "aws_route53_resolver_endpoint": Route53Resolver,
+        "aws_route53_resolver_rule": Route53ResolverRule,
         "aws_route_table": RouteTable,
         "aws_route_table_association": RouteTable,
         "aws_subnet": PublicSubnet,
@@ -69,4 +69,4 @@ def get_node(type, name):
 
     if type not in mapping:
         return Node(f"{type}\n{name}", shape="box")
-    return mapping[type](f"{type}\n{name}", imagepos="tc")
+    return mapping[type](f"{type}\n{name}")
