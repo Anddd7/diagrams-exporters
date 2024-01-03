@@ -8,6 +8,8 @@
 ## Features
 
 - [ ] terraform graph
+  - [x] parse & generate nodes
+  - [ ] tidy the edges
 - [ ] awscli scan
   - depends on the patterns in diagrams-patterns (e.g. vpc with igw, subnet and nat)
 
