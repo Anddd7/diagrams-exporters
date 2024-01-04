@@ -10,12 +10,14 @@ from diagrams_ext import (
     setcluster,
     getcluster,
 )
+
 from diagrams_ext.custom import Custom
-from diagrams_patterns import HiddenPoint, tocluster, fromcluster
-from diagrams_exporters.aws import (
-    filter,
-    get_node,
-)
+from diagrams_ext.k8s.podconfig import ConfigMap
+from diagrams_ext.custom import Custom
+from diagrams_ext.generic.blank import Blank
+from diagrams_patterns import tocluster, fromcluster
+import diagrams_exporters.aws
+
 
 # variables
 DEBUG = False
@@ -271,3 +273,27 @@ def convert_to_diagrams_edges(edges: dict[str, list[str]], cache):
                 )
             else:
                 source - Edge(forward=True, minlen="5") - depend
+
+
+def filter(type, name):
+    if type.startswith("aws"):
+        return diagrams_exporters.aws.filter(type, name)
+    return True
+
+
+generic_mapping = {
+    "kubernetes_config_map": ConfigMap,
+    "local_file": "https://img.icons8.com/ios-filled/50/file.png",
+    "rancher2_cluster": "https://avatars.githubusercontent.com/u/9343010",
+}
+
+
+def get_node(type, name):
+    if type.startswith("aws"):
+        clazz = diagrams_exporters.aws.get_node_class(type, name)
+    else:
+        clazz = generic_mapping.get(type, Blank)
+
+    if isinstance(clazz, str):
+        return Custom(f"{type}\n{name}", clazz)
+    return clazz(f"{type}\n{name}")

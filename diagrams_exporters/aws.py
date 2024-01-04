@@ -16,8 +16,6 @@ from diagrams_ext.aws.database import *
 from diagrams_ext.aws.compute import *
 from diagrams_ext.aws.general import *
 from diagrams_ext.generic.network import Subnet as Route
-from diagrams_ext.k8s.podconfig import ConfigMap
-from diagrams_ext.custom import Custom
 
 KeyPair = IdentityAndAccessManagementIamDataEncryptionKey
 
@@ -35,7 +33,7 @@ def filter(type, name):
     return True
 
 
-icon_mapping = {
+mapping = {
     "aws_autoscaling_attachment": EC2AutoScaling,
     "aws_autoscaling_group": EC2AutoScaling,
     "aws_cloudwatch_log_group": Cloudwatch,
@@ -80,14 +78,8 @@ icon_mapping = {
     "aws_eks_cluster": EKS,
     "aws_launch_template": EC2Instance,
     "aws_lb_target_group": EC2Instances,
-    "kubernetes_config_map": ConfigMap,
-    "local_file": "https://img.icons8.com/ios-filled/50/file.png",
-    "rancher2_cluster": "https://avatars.githubusercontent.com/u/9343010",
 }
 
 
-def get_node(type, name):
-    clazz = icon_mapping.get(type, General)
-    if isinstance(clazz, str):
-        return Custom(f"{type}\n{name}", clazz)
-    return clazz(f"{type}\n{name}")
+def get_node_class(type, name):
+    return mapping.get(type, General)
