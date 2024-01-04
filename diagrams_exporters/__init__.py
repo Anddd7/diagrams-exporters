@@ -7,6 +7,8 @@ from diagrams_ext import (
     Cluster,
     Edge,
     Node,
+    setcluster,
+    getcluster,
 )
 from diagrams_ext.custom import Custom
 from diagrams_patterns import HiddenPoint, tocluster, fromcluster
@@ -186,9 +188,11 @@ def convert_to_digrams_nodes(resources: dict[str, Resource], cache):
 
         if resource.type == "provider":
             if SHOW_PROVIDER:
+                parent = getcluster()
                 with cache["provider"]:
                     node = get_provider(resource)
                     cache[resource.id] = node
+                setcluster(parent)
         elif resource.type == "module":
             with Cluster(f"{resource.id}") as cluster:
                 # debug(f"add cluster {resource.id}, {resource.get_name()}")
