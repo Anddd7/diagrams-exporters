@@ -31,42 +31,41 @@ def filter(type, name):
     return True
 
 
-def get_node(type, name):
-    mapping = {
-        "aws_cloudwatch_log_group": Cloudwatch,
-        "aws_customer_gateway": VPCCustomerGateway,
-        "aws_default_network_acl": Nacl,
-        "aws_default_route_table": RouteTable,
-        "aws_default_vpc": VPC,
-        "aws_ec2_transit_gateway": TransitGateway,
-        "aws_ec2_transit_gateway_peering_attachment": TransitGatewayAttachment,
-        "aws_ec2_transit_gateway_peering_attachment_accepter": TransitGatewayAttachment,
-        "aws_ec2_transit_gateway_prefix_list_reference": EC2ElasticIpAddress,
-        "aws_ec2_transit_gateway_route": TransitGatewayRouteTable,
-        "aws_ec2_transit_gateway_vpc_attachment": TransitGatewayAttachment,
-        "aws_egress_only_internet_gateway": InternetGateway,
-        "aws_eip": EC2ElasticIpAddress,
-        "aws_flow_log": VPCFlowLogs,
-        "aws_iam_policy": IAMPermissions,
-        "aws_iam_role": IAMRole,
-        "aws_iam_role_policy_attachment": IAMPermissions,
-        "aws_internet_gateway": InternetGateway,
-        "aws_nat_gateway": NATGateway,
-        "aws_network_acl": Nacl,
-        "aws_ram_principal_association": IAM,
-        "aws_ram_resource_association": IAM,
-        "aws_ram_resource_share": IAM,
-        "aws_route": RouteTable,
-        "aws_route53_resolver_endpoint": Route53Resolver,
-        "aws_route53_resolver_rule": Route53ResolverRule,
-        "aws_route_table": RouteTable,
-        "aws_route_table_association": RouteTable,
-        "aws_subnet": PublicSubnet,
-        "aws_vpc": VPC,
-        "aws_vpn_gateway": VpnGateway,
-        "aws_vpn_gateway_attachment": VpnConnection,
-    }
+icon_mapping = {
+    "aws_cloudwatch_log_group": Cloudwatch,
+    "aws_customer_gateway": VPCCustomerGateway,
+    "aws_default_network_acl": Nacl,
+    "aws_default_route_table": RouteTable,
+    "aws_default_vpc": VPC,
+    "aws_ec2_transit_gateway": TransitGateway,
+    "aws_ec2_transit_gateway_peering_attachment": TransitGatewayAttachment,
+    "aws_ec2_transit_gateway_peering_attachment_accepter": TransitGatewayAttachment,
+    "aws_ec2_transit_gateway_prefix_list_reference": EC2ElasticIpAddress,
+    "aws_ec2_transit_gateway_route": TransitGatewayRouteTable,
+    "aws_ec2_transit_gateway_vpc_attachment": TransitGatewayAttachment,
+    "aws_egress_only_internet_gateway": InternetGateway,
+    "aws_eip": EC2ElasticIpAddress,
+    "aws_flow_log": VPCFlowLogs,
+    "aws_iam_policy": IAMPermissions,
+    "aws_iam_role": IAMRole,
+    "aws_iam_role_policy_attachment": IAMPermissions,
+    "aws_internet_gateway": InternetGateway,
+    "aws_nat_gateway": NATGateway,
+    "aws_network_acl": Nacl,
+    "aws_ram_principal_association": IAM,
+    "aws_ram_resource_association": IAM,
+    "aws_ram_resource_share": IAM,
+    "aws_route": RouteTable,
+    "aws_route53_resolver_endpoint": Route53Resolver,
+    "aws_route53_resolver_rule": Route53ResolverRule,
+    "aws_route_table": RouteTable,
+    "aws_route_table_association": RouteTable,
+    "aws_subnet": PublicSubnet,
+    "aws_vpc": VPC,
+    "aws_vpn_gateway": VpnGateway,
+    "aws_vpn_gateway_attachment": VpnConnection,
+}
 
-    if type not in mapping:
-        return Node(f"{type}\n{name}", shape="box")
-    return mapping[type](f"{type}\n{name}")
+
+def get_node(type, name):
+    return icon_mapping.get(type, General)(f"{type}\n{name}")

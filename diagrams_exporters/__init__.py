@@ -1,3 +1,4 @@
+import re
 import pydot
 
 from diagrams_ext import (
@@ -6,7 +7,8 @@ from diagrams_ext import (
     Edge,
     Node,
 )
-
+from diagrams_ext.custom import Custom
+from diagrams_patterns import HiddenPoint, tocluster, fromcluster
 from diagrams_exporters.aws import (
     filter,
     get_node,
@@ -14,6 +16,7 @@ from diagrams_exporters.aws import (
 
 # variables
 DEBUG = False
+SHOW_PROVIDER = False
 
 
 def debug(msg):
@@ -45,10 +48,18 @@ class Resource:
         return f"{self.resource_type}.{self.resource_name}"
 
 
+# parset the dot file as a terraform graph, include resources and edges
 def parse_dot(filename: str):
     graph = pydot.graph_from_dot_file(filename)[0]
     graph = graph.get_subgraphs()[0]
 
+    resources = parse_resources(graph)
+    edges = parse_edges(graph)
+    return TerraformGraph(resources, edges)
+
+
+# base on the label and name of the nodes to categorize the resources
+def parse_resources(graph):
     root = Resource("root", "root", "root", "root")
     for node in graph.get_nodes():
         parent = root
@@ -89,11 +100,19 @@ def parse_dot(filename: str):
                 # debug(f"add {resource.get_name()} into {parent.get_name()}")
                 parent.add_resource(resource)
             parent = parent.resources[resource.get_name()]
+    return root.resources
 
+
+# parse the edges into a 1:n dict for lookup, with the same resource id
+# Ignore: is_close, there are many inner edges inside module, which is not useful
+def parse_edges(graph):
     edges = {}
     for edge in graph.get_edges():
-        src = trim_edge(edge.get_source())
-        dst = trim_edge(edge.get_destination())
+        src, is_close = trim_edge(edge.get_source())
+        dst, _ = trim_edge(edge.get_destination())
+        if is_close:
+            # debug(f"skip inner edge {src} -> {dst}")
+            continue
 
         # debug(f"add edge {src} -> {dst}")
 
@@ -101,21 +120,17 @@ def parse_dot(filename: str):
             edges[src].append(dst)
         else:
             edges[src] = [dst]
-
-    return TerraformGraph(root.resources, edges)
+    return edges
 
 
 def trim_edge(input: str):
-    return trim_prefix(
-        trim_suffix(
-            trim_suffix(
-                input.strip('"'),
-                " (expand)",
-            ),
-            " (close)",
-        ),
-        "[root] ",
-    )
+    input = input.strip('"')
+    input = trim_prefix(input, "[root] ")
+    if input.endswith(" (expand)"):
+        return trim_suffix(input, " (expand)"), False
+    if input.endswith(" (close)"):
+        return trim_suffix(input, " (close)"), True
+    return input, False
 
 
 def trim_prefix(input: str, prefix: str):
@@ -130,9 +145,11 @@ def trim_suffix(input: str, suffix: str):
     return input
 
 
-def convert_to_digrams(terraform_graph: TerraformGraph):
+# convert to diagrams classes
+# cache, is used to build the edge between nodes and clusters
+def convert_to_diagrams(terraform_graph: TerraformGraph):
     with Diagram(
-        "dist/terraform",
+        "dist/terraform-diagrams",
         show=False,
         direction="BT",
         graph_attr={
@@ -143,15 +160,19 @@ def convert_to_digrams(terraform_graph: TerraformGraph):
         },
     ):
         cache = {}
+        if SHOW_PROVIDER:
+            cache["provider"] = Cluster("provider")
         convert_to_digrams_nodes(terraform_graph.resources, cache)
         convert_to_diagrams_edges(terraform_graph.edge, cache)
 
 
+# map resource to Node or Cluster
+# Ignore: data, just a input, no actual resource will be created
+# Ignore: var, just a input
+# Ignore: povider, TODO, not sure how to display the poviders
+# Ignore: filter(), ignore useless resources
 def convert_to_digrams_nodes(resources: dict[str, Resource], cache):
     for resource in resources.values():
-        if resource.type == "provider":
-            # Node(resource.id)
-            continue
         if resource.type == "data":
             continue
         if resource.type == "var":
@@ -159,23 +180,50 @@ def convert_to_digrams_nodes(resources: dict[str, Resource], cache):
         if not filter(resource.resource_type, resource.resource_name):
             continue
 
-        if resource.type == "module":
-            with Cluster(
-                f"{resource.resource_type}\n{resource.resource_name}"
-            ) as cluster:
+        if resource.type == "provider":
+            if SHOW_PROVIDER:
+                with cache["provider"]:
+                    node = get_provider(resource)
+                    cache[resource.id] = node
+        elif resource.type == "module":
+            with Cluster(f"{resource.id}") as cluster:
                 # debug(f"add cluster {resource.id}, {resource.get_name()}")
                 convert_to_digrams_nodes(resource.resources, cache)
                 cache[resource.id] = cluster
+                # add hidden point for cluster edge
+                hp_id = f"{resource.id}_hp"
+                cache[hp_id] = Node(
+                    hp_id, shape="none", width="0", height="0", fontcolor="transparent"
+                )
         else:
             # debug(f"add node {resource.id}, {resource.get_name()}")
-            node = convert_to_node(resource)
+            node = get_node(resource.resource_type, resource.resource_name)
             cache[resource.id] = node
 
 
-def convert_to_node(resource: Resource):
-    return get_node(resource.resource_type, resource.resource_name)
+# render provider as a custom node
+def get_provider(resource):
+    label = resource.id
+    matches = re.match(r'provider\[\\"([^"]+)\\"\]\.?(\w+)?', resource.id)
+    if matches:
+        registry = matches.group(1)
+        name = matches.group(2)
+        if name is None:
+            label = registry
+        else:
+            label = f"{registry}\n{name}"
+
+    provider = Custom(
+        label,
+        "https://img.icons8.com/color/48/terraform.png",
+    )
+
+    return provider
 
 
+# map edges to Edge, with the help of cache
+# Ignore: output, are only existing in edge, so it will be skipped since no node is created for them
+# Ignore: local, are only existing in edge
 def convert_to_diagrams_edges(edges: dict[str, list[str]], cache):
     for src, dsts in edges.items():
         source = cache.get(src)
@@ -187,10 +235,31 @@ def convert_to_diagrams_edges(edges: dict[str, list[str]], cache):
             if depend is None:
                 # debug(f"Error: not found the node {dst}")
                 continue
+            if isinstance(source, Cluster) and isinstance(depend, Cluster):
+                continue
             if isinstance(source, Cluster):
+                source = cache.get(f"{source.label}_hp", source)
+                depend = cache.get(f"{depend.label}_hp", depend)
                 debug(f"add edge cluster {source.label} -> {depend.label}")
-                continue
-            if isinstance(depend, Cluster):
-                debug(f"add edge {source.label} -> cluster {depend.label}")
-                continue
-            source - Edge(forward=True, minlen="5") - depend
+                fromcluster(
+                    source,
+                    depend,
+                    forward=True,
+                    penwidth="2",
+                    color="red",
+                    style="dashed",
+                )
+            elif isinstance(depend, Cluster):
+                source = cache.get(f"{source.label}_hp", source)
+                depend = cache.get(f"{depend.label}_hp", depend)
+                debug(f"add edge cluster {source.label} -> {depend.label}")
+                tocluster(
+                    source,
+                    depend,
+                    forward=True,
+                    penwidth="2",
+                    color="red",
+                    style="dashed",
+                )
+            else:
+                source - Edge(forward=True, minlen="5") - depend
