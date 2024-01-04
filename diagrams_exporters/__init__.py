@@ -1,3 +1,4 @@
+import os
 import re
 import pydot
 
@@ -25,7 +26,10 @@ def debug(msg):
 
 
 class TerraformGraph:
-    def __init__(self, resources: dict[str, "Resource"], edge: dict[str, list[str]]):
+    def __init__(
+        self, filename, resources: dict[str, "Resource"], edge: dict[str, list[str]]
+    ):
+        self.filename = filename
         self.resources = resources
         self.edge = edge
 
@@ -55,7 +59,7 @@ def parse_dot(filename: str):
 
     resources = parse_resources(graph)
     edges = parse_edges(graph)
-    return TerraformGraph(resources, edges)
+    return TerraformGraph(os.path.basename(filename), resources, edges)
 
 
 # base on the label and name of the nodes to categorize the resources
@@ -66,7 +70,7 @@ def parse_resources(graph):
         label = node.get_label().strip('"')
         names = label.split(".")
         while len(names) > 0:
-            if label.startswith("provider"):
+            if names[0].startswith("provider"):
                 type = "provider"
                 if names[-1].endswith("]"):
                     resource_type = label
@@ -86,7 +90,7 @@ def parse_resources(graph):
                 type = names[0]  # include module & var
                 resource_type = names[0]
                 if len(names) == 1:
-                    debug(f"Error: {label}")
+                    debug(f"Error: {label}, {names}")
                 resource_name = names[1]
 
                 names = names[2:]
@@ -149,7 +153,7 @@ def trim_suffix(input: str, suffix: str):
 # cache, is used to build the edge between nodes and clusters
 def convert_to_diagrams(terraform_graph: TerraformGraph):
     with Diagram(
-        "dist/terraform-diagrams",
+        f"dist/{terraform_graph.filename}",
         show=False,
         direction="BT",
         graph_attr={
