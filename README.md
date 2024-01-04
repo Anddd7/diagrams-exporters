@@ -5,15 +5,24 @@
 
 **diagrams-exporters** export the metadata from existing tools, and generate the diagrams.
 
-> example from: <https://github.com/hashicorp/learn-terraform-no-code-provisioning>
-![](./sample/tmpf.zvhrek.dot.png)
-
 ## Features
 
-- [x] terraform graph
-  - [x] parse & generate nodes
-  - [x] tidy the edges
-- [ ] awscli scan
+### terraform graph
+
+- [x] parse & generate nodes
+- [x] tidy the edges
+
+> <https://github.com/hashicorp/learn-terraform-no-code-provisioning>
+![](./sample/tmpf.zvhrek.dot.png)
+
+> <https://github.com/hashicorp/learn-terraform-provision-eks-cluster>
+![](./sample/tmpf.4phhot.dot.png)
+
+> <https://github.com/hashicorp/learn-terraform-multicloud-kubernetes-eks>
+![](./sample/tmpf.myq0t4.dot.png)
+
+
+### awscli scan
   - depends on the patterns in diagrams-patterns (e.g. vpc with igw, subnet and nat)
 
 ## Roadmap
