@@ -5,6 +5,9 @@
 
 **diagrams-exporters** export the metadata from existing tools, and generate the diagrams.
 
+> example from: <https://github.com/hashicorp/learn-terraform-no-code-provisioning>
+![](./sample/tmpf.zvhrek.png)
+
 ## Features
 
 - [x] terraform graph

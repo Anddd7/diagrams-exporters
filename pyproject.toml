@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "diagrams_exporters"
-version = "0.1.0-alpha1"
+version = "0.1.0"
 description = "export the metadata from existing tools, and generate the diagrams"
 authors = ["Anddd7 <anddd7@icloud.com>"]
 license = "MIT"
