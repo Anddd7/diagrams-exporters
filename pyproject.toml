@@ -10,7 +10,7 @@ readme = "README.md"
 python = "^3.12"
 pydot = "^1.4.2"
 diagrams-patterns = "^0.1.0a"
-diagrams-ext = "0.23.5a5"
+diagrams-ext = "0.23.5a6"
 
 
 [build-system]
