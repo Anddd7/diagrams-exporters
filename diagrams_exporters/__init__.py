@@ -24,9 +24,14 @@ DEBUG = False
 SHOW_PROVIDER = False
 
 
-def debug(msg):
+def printd(msg):
     if DEBUG:
         print(msg)
+
+
+def enable_debug():
+    global DEBUG
+    DEBUG = True
 
 
 class TerraformGraph:
@@ -94,7 +99,7 @@ def parse_resources(graph):
                 type = names[0]  # include module & var
                 resource_type = names[0]
                 if len(names) == 1:
-                    debug(f"Error: {label}, {names}")
+                    printd(f"Error: {label}, {names}")
                 resource_name = names[1]
 
                 names = names[2:]
@@ -155,9 +160,9 @@ def trim_suffix(input: str, suffix: str):
 
 # convert to diagrams classes
 # cache, is used to build the edge between nodes and clusters
-def convert_to_diagrams(terraform_graph: TerraformGraph):
+def convert_to_diagrams(terraform_graph: TerraformGraph, filename):
     with Diagram(
-        f"dist/{terraform_graph.filename}",
+        filename,
         show=False,
         direction="BT",
         graph_attr={
@@ -250,7 +255,7 @@ def convert_to_diagrams_edges(edges: dict[str, list[str]], cache):
             if isinstance(source, Cluster):
                 source = cache.get(f"{source.label}_hp", source)
                 depend = cache.get(f"{depend.label}_hp", depend)
-                debug(f"add edge cluster {source.label} -> {depend.label}")
+                printd(f"add edge cluster {source.label} -> {depend.label}")
                 fromcluster(
                     source,
                     depend,
@@ -262,7 +267,7 @@ def convert_to_diagrams_edges(edges: dict[str, list[str]], cache):
             elif isinstance(depend, Cluster):
                 source = cache.get(f"{source.label}_hp", source)
                 depend = cache.get(f"{depend.label}_hp", depend)
-                debug(f"add edge cluster {source.label} -> {depend.label}")
+                printd(f"add edge cluster {source.label} -> {depend.label}")
                 tocluster(
                     source,
                     depend,

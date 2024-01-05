@@ -11,7 +11,10 @@ python = "^3.12"
 pydot = "^1.4.2"
 diagrams-patterns = "^0.1.0a"
 diagrams-ext = "0.23.5a6"
+click = "^8.1.7"
 
+[tool.poetry.scripts]
+diagrams-exporters = "diagrams_exporters_cli:cli"
 
 [build-system]
 requires = ["poetry-core"]
