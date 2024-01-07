@@ -8,7 +8,7 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
-pydot = "^1.4.2"
+pydot = "^2.0.0"
 diagrams-patterns = "^0.1.0a"
 diagrams-ext = "0.23.5a6"
 click = "^8.1.7"
