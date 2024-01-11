@@ -15,6 +15,8 @@ from diagrams_ext.custom import Custom
 from diagrams_ext.k8s.podconfig import ConfigMap
 from diagrams_ext.custom import Custom
 from diagrams_ext.generic.blank import Blank
+from diagrams_ext.programming.hashicorp import Terraform
+from diagrams_ext.generic.compute import File
 from diagrams_patterns import tocluster, fromcluster
 import diagrams_exporters.aws
 
@@ -228,11 +230,7 @@ def get_provider(resource):
         else:
             label = f"{registry}\n{name}"
 
-    provider = Custom(
-        label,
-        "https://img.icons8.com/color/48/terraform.png",
-    )
-
+    provider = Terraform(label)
     return provider
 
 
@@ -288,7 +286,7 @@ def filter(type, name):
 
 generic_mapping = {
     "kubernetes_config_map": ConfigMap,
-    "local_file": "https://img.icons8.com/ios-filled/50/file.png",
+    "local_file": File,
     "rancher2_cluster": "https://avatars.githubusercontent.com/u/9343010",
 }
 

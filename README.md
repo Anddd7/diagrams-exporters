@@ -7,10 +7,7 @@
 
 ## Features
 
-### terraform graph
-
-- [x] parse & generate nodes
-- [x] tidy the edges
+### :rocket: terraform graph
 
 > <https://github.com/hashicorp/learn-terraform-no-code-provisioning>
 ![](./sample/tmpf.zvhrek.dot.png)
@@ -22,8 +19,38 @@
 ![](./sample/tmpf.myq0t4.dot.png)
 
 
-### awscli scan
+### :construction: awscli scan
   - depends on the patterns in diagrams-patterns (e.g. vpc with igw, subnet and nat)
+
+
+## Usage
+
+Install the package:
+
+```bash
+pipx install diagrams-exporters
+```
+
+### terraform graph (only aws supported)
+
+Exectute the following command in your terraform workspace, it will generate terraform graph and export to Diagrams.
+
+```bash
+diagrams-exporters terraform
+# use -d to specify the output directory/file
+diagrams-exporters terraform -o diagrams-exported
+diagrams-exporters terraform -o dist/diagrams-exported
+```
+
+### dot graph (only terraform/aws supported)
+
+If you have existing .dot file
+
+```bash
+diagrams-exporters dot -f existing.dot
+diagrams-exporters dot -f existing.dot -o diagrams-exported
+diagrams-exporters dot -f existing.dot -o dist/diagrams-exported
+```
 
 ## Roadmap
 

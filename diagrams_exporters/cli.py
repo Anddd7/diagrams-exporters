@@ -97,7 +97,3 @@ def run(input, output):
 
     graph = parse_dot(input)
     convert_to_diagrams(graph, output)
-
-
-if __name__ == "__main__":
-    cli()
