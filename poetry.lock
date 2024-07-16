@@ -281,22 +281,22 @@ files = [
 
 [[package]]
 name = "pydot"
-version = "2.0.0"
+version = "3.0.0"
 description = "Python interface to Graphviz's Dot"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "pydot-2.0.0-py3-none-any.whl", hash = "sha256:408a47913ea7bd5d2d34b274144880c1310c4aee901f353cf21fe2e526a4ea28"},
-    {file = "pydot-2.0.0.tar.gz", hash = "sha256:60246af215123fa062f21cd791be67dda23a6f280df09f68919e637a1e4f3235"},
+    {file = "pydot-3.0.0-py3-none-any.whl", hash = "sha256:4d7e680af1f0b62b3dc7dc0ad5bed6c764add94cb1fc932c5ce2567639d2e712"},
+    {file = "pydot-3.0.0.tar.gz", hash = "sha256:764640e04f7560dbf0fdfae25f8b6ab59f8c0cd93351d552d779b00d70885411"},
 ]
 
 [package.dependencies]
-pyparsing = ">=3"
+pyparsing = ">=3.0.9"
 
 [package.extras]
-dev = ["black", "chardet"]
+dev = ["chardet", "parameterized", "ruff"]
 release = ["zest.releaser[recommended]"]
-tests = ["black", "chardet", "tox"]
+tests = ["chardet", "parameterized", "ruff", "tox", "unittest-parallel"]
 
 [[package]]
 name = "pyparsing"
@@ -402,4 +402,4 @@ zstd = ["zstandard (>=0.18.0)"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "a5ac044ed263ef52207a6a80e2844cf64c372bdd369f26288fb6b1b7125086c8"
+content-hash = "7e4b8ebe11716f3762c50a1c78357b768dea27ec10ba9733186067d9e65a1953"
